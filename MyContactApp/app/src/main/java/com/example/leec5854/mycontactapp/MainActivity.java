@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editAddress;
     EditText editNumber;
     EditText editSearch;
+    private String string= "";
 
 
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         editAddress= findViewById(R.id.editText_address);
         editNumber= findViewById(R.id.editText_number);
         editSearch= findViewById(R.id.editText_search);
+
 
         myDb = new DatabaseHelper(this);
         Log.d("MyContactApp", "MainActivity: instantiated myDb");
@@ -62,13 +64,14 @@ public class MainActivity extends AppCompatActivity {
         while(res.moveToNext()){
             //Append res column 0, 1, 2, 3 to the buffer - see Stringbuffer and Cursor api's
             //Delimit each of the "appends" with line feed "\n"
-            buffer.append("\nName: " + res.getString(1));
+            buffer.append("Name: " + res.getString(1));
             buffer.append("\nAddress: " + res.getString(2));
-            buffer.append("\nNumber: " + res.getString(3));
+            buffer.append("\nNumber: " + res.getString(3) + "\n");
 
         }
-
+        string = buffer.toString();
         showMessage("Data", buffer.toString());
+
 
     }
 
@@ -85,25 +88,26 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.clairelee.mycontactapp_p2.MESSAGE";
     public void searchRecord(View view){
         Log.d("MyContactApp", "MainActivity: launching SearchActivity");
-        Cursor x = myDb.getAllData();
+        Cursor data = myDb.getAllData();
         Intent intent = new Intent ( this, SearchActivity.class);
         StringBuffer buffer = new StringBuffer();
 
-        while(x.moveToNext()){
-            if(buffer.length()!=0 && x.getString(1).equals(editSearch.getText().toString())) {
-                buffer.append("Name: " + x.getString(1) + "\n");
-                buffer.append("Address: " + x.getString(2) + "\n");
-                buffer.append("Number: " + x.getString(3) + "\n");
+        while(data.moveToNext()){
+            if(data.getString(1).equals(editSearch.getText().toString())) {
+                buffer.append("Name: " + data.getString(1) + "\n");
+                Log.d("MyContactApp", "MainActivity" + " " + buffer.toString());
+                buffer.append("Address: " + data.getString(2) + "\n");
+                Log.d("MyContactApp", "MainActivity" + " " + buffer.toString());
+                buffer.append("Number: " + data.getString(3) + "\n");
+                Log.d("MyContactApp", "MainActivity" + " " + buffer.toString());
             }
-            else
-            {
-                buffer.append("No name in database");
-            }
+
         }
 
-       /* if(buffer.length()==0){
+        if(buffer.length()==0){
             buffer.append("No name in database");
-        }*/
+        }
+
         intent.putExtra(EXTRA_MESSAGE, buffer.toString());
         startActivity(intent);
         }

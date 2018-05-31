@@ -13,11 +13,11 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         //get the intent that started the activity
-        Intent intent = getIntent();
+        android.content.Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         //set the string in TextView
-        TextView textView = findViewById(R.id.textView4);
+        android.widget.TextView textView = findViewById(R.id.textView4);
         textView.setText(message);
 
 

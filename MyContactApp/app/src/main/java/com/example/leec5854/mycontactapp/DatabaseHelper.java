@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NUMBER_CONTACT = "number";
 
     public static final String SQL_CREATE_ENTRIES= "CREATE TABLE " + TABLE_NAME + " (" +  ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME_CONTACT + " TEXT, " + COLUMN_ADDRESS_CONTACT + "TEXT, " + COLUMN_NUMBER_CONTACT + "TEXT)" ;
+            + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_NAME_CONTACT + " TEXT, " + COLUMN_ADDRESS_CONTACT + " TEXT, " + COLUMN_NUMBER_CONTACT + " TEXT)" ;
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
-        if(result==1){
+        if(result== -1){
             Log.d("MyContactApp", "DatabaseHelper: Contact insert - FAILED");
             return false;
         }
