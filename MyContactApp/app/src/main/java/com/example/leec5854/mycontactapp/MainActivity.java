@@ -1,5 +1,6 @@
 package com.example.leec5854.mycontactapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +10,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper myDb;
     EditText editName;
     EditText editAddress;
     EditText editNumber;
+    EditText editSearch;
 
 
 
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         editName= findViewById(R.id.editText_name);
         editAddress= findViewById(R.id.editText_address);
         editNumber= findViewById(R.id.editText_number);
+        editSearch= findViewById(R.id.editText_search);
 
         myDb = new DatabaseHelper(this);
         Log.d("MyContactApp", "MainActivity: instantiated myDb");
@@ -57,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
         while(res.moveToNext()){
             //Append res column 0, 1, 2, 3 to the buffer - see Stringbuffer and Cursor api's
             //Delimit each of the "appends" with line feed "\n"
-            //buffer.append("Name: " + res.getString(0));
-            //buffer.append("Address: " + res.getString(1));
-            //buffer.append("Number: " + res.getString(2));
+            buffer.append("Name: " + res.getString(1));
+            buffer.append("Address: " + res.getString(2));
+            buffer.append("Number: " + res.getString(3));
 
         }
 
@@ -77,4 +82,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-}
+    public static final String EXTRA_MESSAGE = "com.example.clairelee.mycontactapp_p2.MESSAGE";
+    public void searchRecord(View view){
+        Log.d("MyContactApp", "MainActivity: launching SearchActivity");
+        Cursor x = myDb.getAllData();
+        Intent intent = new Intent ( this, SearchActivity.class);
+        StringBuffer buffer = new StringBuffer();
+
+        while(x.moveToNext()){
+            if(buffer.length()!=0 && x.getString(1).equals(editSearch.getText().toString())) {
+                buffer.append("Name: " + x.getString(1) + "\n");
+                buffer.append("Address: " + x.getString(2) + "\n");
+                buffer.append("Number: " + x.getString(3) + "\n");
+            }
+            else
+            {
+                buffer.append("No name in database");
+            }
+        }
+
+       /* if(buffer.length()==0){
+            buffer.append("No name in database");
+        }*/
+        intent.putExtra(EXTRA_MESSAGE, buffer.toString());
+        startActivity(intent);
+        }
+
+
+    }
+
+
